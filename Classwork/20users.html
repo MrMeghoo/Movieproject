@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Contact List</title> 
+    <link rel="stylesheet" href="20users.css">
+    <link rel="stylesheet" href="20user.js"
+</head>
+<body>
+    <div id="contacts-container"></div>
+
+    <script>
+        // Fetched 20 random users from the API
+        fetch('https://randomuser.me/api/?results=20')
+            .then(response => response.json())
+            .then(data => {
+                // User info to be pulled from res
+                const users = data.results.map(user => {
+                    return {
+                        firstName: user.name.first,
+                        lastName: user.name.last,
+                        phoneNumber: user.phone,
+                        address: `${user.location.street.number} ${user.location.street.name},
+                         ${user.location.city}, ${user.location.state}, ${user.location.country}, 
+                         ${user.location.postcode}`,
+                        photo: user.picture.medium
+                    };
+                });
+
+                // contact cards are going to be displayed for each user
+                const contactsContainer = document.getElementById("contacts-container");
+                users.forEach(user => {
+                    const contactCard = document.createElement('div');
+                    contactCard.classList.add('contact-card');
+                    contactCard.innerHTML = `
+                        <img src="${user.photo}" alt="${user.firstName} ${user.lastName}">
+                        <h2>${user.firstName} ${user.lastName}</h2>
+                        <p><strong>Phone:</strong> ${user.phoneNumber}</p>
+                        <p><strong>Address:</strong> ${user.address}</p>
+                    `;
+                    contactsContainer.appendChild(contactCard);
+                });
+            })
+        
+    </script>
+</body>
+</html>
