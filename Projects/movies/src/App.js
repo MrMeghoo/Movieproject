@@ -1,4 +1,4 @@
-import 'bootswatch/dist/darkly/bootstrap.min.css'
+import { Button, Navbar, Nav } from 'react-bootstrap';
 import Header from './components/Header';
 import Moviegate from './components/Moviegate';
 

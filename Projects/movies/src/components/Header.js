@@ -9,7 +9,7 @@ function Header() {
                 <Nav className="me-auto">
                     <Nav.Link href="#home">Home</Nav.Link>
                     <Nav.Link href="#features">Trending</Nav.Link>
-                    <Nav.Link href="#pricing">Join Us</Nav.Link>
+                    <Nav.Link href="https://buy.stripe.com/test_aEUg1F1dk9Lw2yI9AA">Join Us</Nav.Link>
                 </Nav>
             </Container>
         </Navbar>
