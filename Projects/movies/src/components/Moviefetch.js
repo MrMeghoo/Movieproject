@@ -2,6 +2,7 @@ export const Moviefetch = async (searchText, moviesCallback, errorCallback, fina
     try {
         const response = await fetch(`http://www.omdbapi.com/?s=${searchText}&type=movie&apikey=e977b024`);
         const data = await response.json();
+        console.log ()
 
         if (data.Response === 'True') {
             const movieInfoPromises = data.Search.map((movie) => fetchMovieInfo(movie.imdbID, errorCallback));
