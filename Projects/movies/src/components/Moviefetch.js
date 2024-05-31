@@ -22,12 +22,11 @@ export const Moviefetch = async (query, setMovies, setError, onComplete) => {
             setError(result.Error);
         }
     } catch (error) {
-        // If an error occurs during the fetch operation, set movies to an empty array
+        
         setMovies([]);
-        // Set a generic error message
         setError('An error occurred while fetching data.');
     } finally {
-        // Execute the onComplete callback function, regardless of success or failure
+
         onComplete();
     }
 };
@@ -35,12 +34,12 @@ export const Moviefetch = async (query, setMovies, setError, onComplete) => {
 // This function fetches details of a single movie by its ID from the OMDB API
 const getMovieDetails = async (id, setError) => {
     try {
-        // Fetch movie details from the OMDB API using the provided ID
+        // Fetch the movie details from the API by using the provided ID
         const response = await fetch(`https://www.omdbapi.com/?i=${id}&plot=full&apikey=e977b024`);
         // Parse the response as JSON
         const result = await response.json();
 
-        // Check if the response is successful
+        // quick check to see if my request is successful
         if (result.Response === 'True') {
             return result;
         } else {
