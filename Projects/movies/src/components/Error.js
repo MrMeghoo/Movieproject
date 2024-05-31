@@ -1,11 +1,13 @@
-function Error({error, searchTerm}) {
+import React from 'react';
+
+const Error = ({ error, searchTerm }) => {
     return (
-      <div class="alert alert-dismissible alert-danger">
-        <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
-        <strong>Oh snap!</strong> '{searchTerm}' resulted in '{error}' error
-      </div>
+        <div className="alert alert-danger alert-dismissible">
+            <button type="button" className="btn-close" data-bs-dismiss="alert"></button>
+            <strong>That ain't it Shawty!</strong> The search term '{searchTerm}' caused the following error: '{error}'.
+        </div>
     );
-  }
-  
-  export default Error;
+};
+export default Error;
+
   

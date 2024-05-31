@@ -1,39 +1,54 @@
-export const Moviefetch = async (searchText, moviesCallback, errorCallback, finallyCallback) => {
+// This function fetches a list of movies based on a query from the OMDB API
+export const Moviefetch = async (query, setMovies, setError, onComplete) => {
     try {
-        const response = await fetch(`https://www.omdbapi.com/?s=${searchText}&type=movie&apikey=e977b024`);
-        const data = await response.json();
-        console.log ()
+        // Fetch movie data from the OMDB API using the provided query
+        const response = await fetch(`https://www.omdbapi.com/?s=${query}&type=movie&apikey=e977b024`);
+        const result = await response.json();
+        
+        
+        if (result.Response === 'True') {
+            const movieDetailsPromises = result.Search.map((movie) => getMovieDetails(movie.imdbID, setError));
+            // this snippet is for all movie details promises to resolve
+            const movieDetails = await Promise.all(movieDetailsPromises);
 
-        if (data.Response === 'True') {
-            const movieInfoPromises = data.Search.map((movie) => fetchMovieInfo(movie.imdbID, errorCallback));
-            const Movieinfo = await Promise.all(movieInfoPromises);
-
-            moviesCallback(Movieinfo);
-            errorCallback(null);
+            // Update state with the fetched movie details
+            setMovies(movieDetails);
+            // Clear any previous error
+            setError(null);
         } else {
-            moviesCallback([]);
-            errorCallback(data.Error);
+            // If the response is not successful, set movies to an empty array
+            setMovies([]);
+            // Set an error message based on the error from the API
+            setError(result.Error);
         }
-    } catch (err) {
-        moviesCallback([]);
-        errorCallback('An error occurred while fetching data.');
+    } catch (error) {
+        // If an error occurs during the fetch operation, set movies to an empty array
+        setMovies([]);
+        // Set a generic error message
+        setError('An error occurred while fetching data.');
     } finally {
-        finallyCallback()
+        // Execute the onComplete callback function, regardless of success or failure
+        onComplete();
     }
 };
 
-const fetchMovieInfo = async (id, errorCallback) => {
+// This function fetches details of a single movie by its ID from the OMDB API
+const getMovieDetails = async (id, setError) => {
     try {
+        // Fetch movie details from the OMDB API using the provided ID
         const response = await fetch(`https://www.omdbapi.com/?i=${id}&plot=full&apikey=e977b024`);
-        const data = await response.json();
+        // Parse the response as JSON
+        const result = await response.json();
 
-        if (data.Response === 'True') {
-            return data;
+        // Check if the response is successful
+        if (result.Response === 'True') {
+            return result;
         } else {
-            throw new Error(data.Error);
+            throw new Error(result.Error);
         }
-    } catch (err) {
-        errorCallback('An error occurred while fetching movie details.');
+    } catch (error) {
+        setError('An error occurred while fetching movie details.');
     }
 };
 
+// The OMDB API has a default behavior of returning only 10 results per request
